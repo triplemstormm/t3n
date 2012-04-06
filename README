@@ -1,0 +1,34 @@
+======
+INTRO:
+======
+t3n is a high-level language designed for use in the upcoming 0x10c game. An EBNF is included to define the language. NOTE: This is NOT in its final form, so some features may be subject to change. 
+
+=========
+COMPILER:
+=========
+The t3n compiler is written in python. Its usage is as follows:
+
+	python t3n.py < FILE.t3n
+
+FILE.t3n represents your input source file. The t3n extension is not necessary, but recommended. 
+
+=================
+ACKNOWLEDGEMENTS:
+=================
+The t3n compiler is written in python, and uses the PLY parsing tools. I DO NOT OWN, NOR AM I ASSOCIATED IN ANY WAY WITH THIS PROJECT. 
+
+===============
+SAMPLE PROGRAM:
+===============
+
+#calculate factorial
+int fact(int f) {
+        if (f == 1) {
+                return 1;
+        } else {
+                return f*fact(f-1);
+        }
+}
+
+int f5 = fact(5);
+exit;

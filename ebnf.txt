@@ -1,0 +1,92 @@
+EBNF for t3n (in progress)
+-------------------------------------------
+{ x } means 0 or more instances of x
+'{' x '}'  means an instance of x between two literals
+-------------------------------------------
+start	-> {proc} {stm}
+
+id	-> [A-Za-z][A-Za-z0-9]*
+int	-> [0-9]+
+string	-> "[^"]*"	# double quoted string, not containing " char
+
+type	-> 'int'
+rType	-> type | 'void'
+
+lvalue	-> id
+	-> lvalue '[' expr ']'
+
+decl	-> type lvalue ';'
+	-> type id '=' expr ';'
+
+stms 	-> stm {stm}
+
+stm 	-> decl
+	-> if | do | while | for  
+	-> 'break' ';' | 'exit' ';' | 'return' ';' 
+	-> lvalue '=' expr ';'
+	-> expr ';'
+	-> block
+
+fxn	-> rType id '(' argLst ')' block
+
+argLst	-> type lvalue {',' type lvalue}	
+
+block -> '{' stms '}'
+
+if 	-> 'if' '(' expr ')' block elTag
+elTag	-> 'elif' '(' expr ')' block elTag
+	-> 'else' block
+
+do 	-> 'do' block 'while' '(' expr ')' ';'
+while 	-> 'while' '(' expr ')' block
+for	-> for '(' id ':' expr ':' stm ')'
+
+expr	-> lvalue
+	-> int
+	-> 'true'
+	-> 'false'
+	-> string
+	-> '-' expr	#unary minus
+	-> id '(' ')'
+	-> id '(' expr { ',' expr } ')'
+	-> ++ lvalue
+	-> -- lvalue
+	-> lvalue ++
+	-> lvalue --
+	-> expr '+' expr
+	-> expr '-' expr
+	-> expr '*' expr
+	-> expr '/' expr
+	-> expr '%' expr
+	-> expr '==' expr
+	-> expr '!=' expr
+	-> expr '>' expr
+	-> expr '<' expr
+	-> expr '>=' expr
+	-> expr '<=' expr
+	-> '(' expr ')'
+
+
+########################################
+
+operator precedence:
+---------------------------
+++ --		| right
+----------------|----------
+++ --		| left
+----------------|----------
+- 		| right
+----------------|----------
+* / %		| left
+----------------|----------
++ -             | left
+----------------|----------
+> < >= <- 	| left
+----------------|----------
+== !- 		| left
+----------------|----------
++= -=		| left
+--------------------------|
+
+########################################
+SEMANTICS: GETTING THERE!
